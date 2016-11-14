@@ -12,14 +12,23 @@ namespace hw3
 
 #pragma region Big-Five
 
-		inline Array<T>(size_t capacity = 16)
+		inline Array<T>(size_t size = 0, size_t capacity = 16)
 			:
 			data(nullptr),
 			capacity(capacity),
-			length(0)
+			size(size)
 		{
+			if (capacity < size)
+			{
+				capacity = size;
+			}
+
 			if (capacity > 0)
+			{
 				data = new T[capacity];
+				for (size_t i = 0; i < size; i++)
+					data[i] = T();
+			}
 		}
 
 		inline ~Array<T>()
@@ -31,20 +40,20 @@ namespace hw3
 		inline Array<T>(Array<T> const & other)
 			: data(nullptr),
 			capacity(other.capacity),
-			length(other.length)
+			size(other.size)
 		{
 			if (capacity > 0)
 			{
 				data = new T[capacity];
 
-				for (size_t i = 0; i < length; i++)
+				for (size_t i = 0; i < size; i++)
 					data[i] = other.data[i];
 			}
 		}
 
 		inline Array<T>(Array<T>&& other)
 			: capacity(other.capacity),
-			length(other.length),
+			size(other.size),
 			data(other.data)
 		{
 			other.data = nullptr;
@@ -60,11 +69,11 @@ namespace hw3
 					data = nullptr;
 				}
 				capacity = other.capacity;
-				length = other.length;
+				size = other.size;
 				if (capacity > 0)
 				{
 					data = new T[capacity];
-					for (size_t i = 0; i < length; i++)
+					for (size_t i = 0; i < size; i++)
 						data[i] = other.data[i];
 				}
 			}
@@ -82,7 +91,7 @@ namespace hw3
 				}
 
 				capacity = other.capacity;
-				length = other.length;
+				size = other.size;
 				data = other.data;
 
 				other.data = nullptr;
@@ -96,7 +105,7 @@ namespace hw3
 
 		inline T& operator [] (size_t index)
 		{
-			if (index >= length)
+			if (index >= size)
 				throw InvalidIndex();
 
 			return data[index];
@@ -104,47 +113,52 @@ namespace hw3
 
 		inline const T& operator [] (size_t index) const
 		{
-			if (index >= length)
+			if (index >= size)
 				throw InvalidIndex();
 
 			return data[index];
 		}
 
-		inline void Set(T const & elemeent)
+		inline void Set(size_t index, T const & element)
 		{
-			if (index > length)
+			if (index > size)
 				throw InvalidIndex();
 
-			if (index == length)
+			if (index == size)
 				Push(element);
 			else
 				data[index] = element;
 		}
 
-		inline size_t Length() const
+		inline size_t Size() const
 		{
-			return length;
+			return size;
 		}
 
 		inline bool Empty() const
 		{
-			return length == 0;
+			return size == 0;
 		}
 
 		inline void Push(T const & element)
 		{
-			if (length == capacity)
+			if (size == capacity)
 				Extend();
 
-			data[length++] = element;
+			data[size++] = element;
 		}
 
 		inline T& Pop()
 		{
-			if (length == 0)
+			if (size == 0)
 				throw AlreadyEmpty();
 
-			return data[--length];
+			return data[--size];
+		}
+
+		inline void Clear()
+		{
+			size = 0;
 		}
 
 #pragma endregion
@@ -161,7 +175,7 @@ namespace hw3
 
 			if (nullptr != data)
 			{
-				for (size_t i = 0; i < length; i++)
+				for (size_t i = 0; i < size; i++)
 					new_data[i] = data[i];
 
 				delete[] data;
@@ -174,6 +188,6 @@ namespace hw3
 	private:
 		T*		data;
 		size_t	capacity;
-		size_t	length;
+		size_t	size;
 	};
 }

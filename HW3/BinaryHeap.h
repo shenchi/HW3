@@ -15,7 +15,7 @@ namespace hw3
 
 		inline void Insert(T const & element)
 		{
-			size_t cur = data.Length();
+			size_t cur = data.Size();
 			size_t par = (cur - 1) / 2;
 
 			while (cur > 0 && campFunc(element, data[par]))
@@ -31,12 +31,12 @@ namespace hw3
 
 		inline T& Delete()
 		{
-			if (data.Length() == 0)
+			if (data.Size() == 0)
 				throw AlreadyEmpty();
 
-			if (data.Length() > 1)
+			if (data.Size() > 1)
 			{
-				size_t max = data.Length() - 1;
+				size_t max = data.Size() - 1;
 
 				T t = data[max];
 				data[max] = data[0];
