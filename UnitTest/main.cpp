@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Array.h"
+#include "Queue.h"
 #include "BinaryHeap.h"
 #include "Graph.h"
 #include "Dijkstra.h"
@@ -29,6 +30,28 @@ void TestArray()
 	cout << "content: [ ";
 	for (size_t i = 0; i < a.Size(); ++i)
 		cout << a[i] << ' ';
+	cout << ']' << endl << endl;
+}
+
+void TestQueue()
+{
+	cout << "Test for Queue<int>:" << endl;
+	hw3::Queue<int> q;
+
+	q.InsertBack(1);
+	q.InsertBack(2);
+	q.InsertBack(3);
+	q.InsertBack(4);
+	q.InsertBack(5);
+
+	cout << "current size: " << q.Size() << endl;
+
+	cout << "dequeue sequence: [ ";
+
+	while (!q.Empty())
+	{
+		cout << q.RemoveFront() << ' ';
+	}
 	cout << ']' << endl << endl;
 }
 
@@ -79,9 +102,11 @@ int main(int argc, char** argv)
 {
 	TestArray();
 
+	TestQueue();
+
 	TestBinaryHeap();
 
-	TestGraphAndDijkstra();
+	//TestGraphAndDijkstra();
 
 	system("Pause");
 	return 0;

@@ -12,7 +12,7 @@ namespace hw3
 
 #pragma region Big-Five
 
-		inline Array<T>(size_t size = 0, size_t capacity = 16)
+		inline Array(size_t size = 0, size_t capacity = 16)
 			:
 			data(nullptr),
 			capacity(capacity),
@@ -31,13 +31,13 @@ namespace hw3
 			}
 		}
 
-		inline ~Array<T>()
+		inline ~Array()
 		{
 			if (nullptr != data)
 				delete[] data;
 		}
 
-		inline Array<T>(Array<T> const & other)
+		inline Array(Array<T> const & other)
 			: data(nullptr),
 			capacity(other.capacity),
 			size(other.size)
@@ -51,7 +51,7 @@ namespace hw3
 			}
 		}
 
-		inline Array<T>(Array<T>&& other)
+		inline Array(Array<T>&& other)
 			: capacity(other.capacity),
 			size(other.size),
 			data(other.data)
