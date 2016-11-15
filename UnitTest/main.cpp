@@ -44,14 +44,26 @@ void TestQueue()
 	q.InsertBack(4);
 	q.InsertBack(5);
 
-	cout << "current size: " << q.Size() << endl;
+	cout << "current size of q: " << q.Size() << endl;
 
-	cout << "dequeue sequence: [ ";
+	hw3::Queue<int> q2(q);
+
+	cout << "dequeue sequence for q: [ ";
 
 	while (!q.Empty())
 	{
 		cout << q.RemoveFront() << ' ';
 	}
+	cout << ']' << endl;
+
+	cout << "current size of q2: " << q2.Size() << endl;
+	cout << "iterator sequence for q2: [ ";
+
+	for (auto i = q2.GetIterator(); i; ++i)
+	{
+		cout << *i << ' ';
+	}
+
 	cout << ']' << endl << endl;
 }
 

@@ -148,6 +148,7 @@
     <ClInclude Include="Array.h" />
     <ClInclude Include="Dijkstra.h" />
     <ClInclude Include="BinaryHeap.h" />
+    <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="Queue.h" />
   </ItemGroup>

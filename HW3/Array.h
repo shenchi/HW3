@@ -1,10 +1,9 @@
 #pragma once
 
+#include "Exceptions.h"
+
 namespace hw3
 {
-	struct InvalidIndex {};
-	struct AlreadyEmpty {};
-
 	template<typename T>
 	class Array
 	{
