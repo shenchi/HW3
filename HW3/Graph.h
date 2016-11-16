@@ -7,7 +7,7 @@ namespace hw3
 	class Graph
 	{
 	public:
-		Graph<T>(size_t size)
+		Graph(size_t size)
 			:
 			size(size),
 			weights(size * size),
@@ -19,6 +19,53 @@ namespace hw3
 		inline bool Edge(size_t a, size_t b) const { return edges[a * size + b]; }
 
 		inline T Weight(size_t a, size_t b) const { return weights[a * size + b]; }
+
+		class Iterator
+		{
+		public:
+
+			inline operator bool() const
+			{
+				return !finish;
+			}
+
+			inline void operator ++ ()
+			{
+				if (finish)
+					return;
+
+				do
+				{
+					n++;
+				} while (n < g.Size() && !g.Edge(v, n));
+
+				if (n >= g.Size())
+					finish = true;
+			}
+
+			inline size_t operator * () const
+			{
+				return n;
+			}
+
+		private:
+			friend class Graph<T>;
+			inline Iterator(Graph<T> const & g, size_t v) : finish(false), g(g), v(v), n(0)
+			{
+				if (!g.Edge(v, n))
+					operator ++ ();
+			}
+
+			bool finish;
+			Graph<T> const & g;
+			size_t v;
+			size_t n;
+		};
+
+		inline Iterator GetIterator(size_t v) const
+		{
+			return Iterator(*this, v);
+		}
 
 		inline void SetEdge(size_t a, size_t b, bool connected, bool directed = false)
 		{

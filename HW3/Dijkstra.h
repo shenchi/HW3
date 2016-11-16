@@ -20,8 +20,8 @@ namespace hw3
 		}
 	};
 
-	template<template<typename> typename TGraph, typename TWeight>
-	Array<size_t> Dijkstra(TGraph<TWeight>& graph, size_t start, size_t end)
+	template<typename TGraph, typename TWeight>
+	Array<size_t> Dijkstra(TGraph& graph, size_t start, size_t end)
 	{
 		Array<bool>	closed(graph.Size());
 		Array<bool>	queued(graph.Size());
@@ -32,9 +32,9 @@ namespace hw3
 
 		PriorityQueue<size_t, TWeight> queue;
 
-		queue.Enqueue(start, 0.0f);
+		queue.Enqueue(start, TWeight());
 		queued[start] = true;
-		dist[start] = 0;
+		dist[start] = TWeight();
 		from[start] = start;
 
 		while (!queue.Empty())
@@ -53,8 +53,9 @@ namespace hw3
 				path.Push(cur);
 			}
 
-			for (size_t i = 0; i < graph.Size(); ++i)
+			for (auto iter = graph.GetIterator(cur); iter; ++iter)
 			{
+				size_t i = *iter;
 				if (!closed[i] && graph.Edge(cur, i))
 				{
 					TWeight new_dist = dist[cur] + graph.Weight(cur, i);

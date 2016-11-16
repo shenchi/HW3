@@ -160,7 +160,7 @@ void TestGraphAndDijkstra()
 	graph.SetWeight(3, 4, 6);
 	graph.SetWeight(4, 5, 9);
 
-	auto path = hw3::Dijkstra<hw3::Graph, float>(graph, 0, 4);
+	auto path = hw3::Dijkstra<hw3::Graph<float>, float>(graph, 0, 4);
 
 	cout << "Path found: [ ";
 	while (!path.Empty())
