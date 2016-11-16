@@ -4,6 +4,7 @@
 #include "Queue.h"
 #include "HashMap.h"
 #include "BinaryHeap.h"
+#include "PriorityQueue.h"
 #include "Graph.h"
 #include "Dijkstra.h"
 
@@ -86,7 +87,7 @@ void TestHashMap()
 
 	for (int i = 0; i <= 5; i++)
 	{
-		cout << (map.Find(i))->value << ' ';
+		cout << (map.Find(i))->second << ' ';
 	}
 
 	cout << ']' << endl << endl;
@@ -97,9 +98,11 @@ void TestBinaryHeap()
 	cout << "Test for BinearyHeap<int>:" << endl;
 	hw3::BinaryHeap<int> bin;
 
+	bin.Insert(6);
 	bin.Insert(1);
 	bin.Insert(3);
 	bin.Insert(5);
+	bin.Insert(6);
 	bin.Insert(4);
 	bin.Insert(2);
 
@@ -109,6 +112,38 @@ void TestBinaryHeap()
 		cout << bin.Delete() << ' ';
 	}
 	cout << ']' << endl << endl;
+}
+
+void TestPriorityQueue()
+{
+	cout << "Test for PriorityQueue<int, int>:" << endl;
+	hw3::PriorityQueue<int, int> q;
+
+	q.Enqueue(0, 10);
+	q.Enqueue(1, 9);
+	q.Enqueue(2, 8);
+	q.Enqueue(3, 7);
+	q.Enqueue(4, 6);
+	q.Enqueue(5, 5);
+
+	hw3::PriorityQueue<int, int> q2(q);
+
+	cout << "delete sequence for q: [ ";
+	while (!q.Empty())
+	{
+		cout << q.Dequeue().first << ' ';
+	}
+	cout << ']' << endl;
+
+	q2.DecreasePriority(0, 0);
+
+	cout << "delete sequence for q2: [ ";
+	while (!q2.Empty())
+	{
+		cout << q2.Dequeue().first << ' ';
+	}
+	cout << ']' << endl << endl;
+
 }
 
 void TestGraphAndDijkstra()
@@ -145,7 +180,9 @@ int main(int argc, char** argv)
 
 	TestBinaryHeap();
 
-	//TestGraphAndDijkstra();
+	TestPriorityQueue();
+
+	TestGraphAndDijkstra();
 
 	system("Pause");
 	return 0;

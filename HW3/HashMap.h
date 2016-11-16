@@ -25,12 +25,12 @@ namespace hw3
 	};
 
 	template<typename K, typename V>
-	struct KeyValuePair
+	struct Pair
 	{
-		K	key;
-		V	value;
+		K	first;
+		V	second;
 
-		inline bool operator == (K const & otherKey) const { return key == otherKey; }
+		inline bool operator == (Pair<K, V> const & other) const { return other.first == first && other.second == second; }
 	};
 
 	template<typename K, typename V, size_t size = 128, typename HashFunc = DefaultHashFunc<K>>
@@ -39,7 +39,7 @@ namespace hw3
 	public:
 		HashMap() : data(size) {}
 
-		typedef	KeyValuePair<K, V> PairType;
+		typedef	Pair<K, V> PairType;
 		typedef typename Queue<PairType>::Iterator Iterator;
 
 		inline void Set(K const & key, V const & value)
@@ -47,7 +47,7 @@ namespace hw3
 			auto iter = Find(key);
 			if (iter)
 			{
-				iter->value = value;
+				iter->second = value;
 			}
 			else
 			{
@@ -69,7 +69,7 @@ namespace hw3
 
 			for (auto i = data[idx].GetIterator(); i; ++i)
 			{
-				if (*i == key)
+				if (i->first == key)
 					return i;
 			}
 
@@ -83,7 +83,7 @@ namespace hw3
 
 			for (auto i = data[idx].GetIterator(); i; ++i)
 			{
-				if (*i == key)
+				if (i->first == key)
 				{
 					data[idx].Remove(i);
 					break;

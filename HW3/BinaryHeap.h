@@ -1,14 +1,27 @@
 #pragma once
 
 #include "Array.h"
+#include "HashMap.h"
 
 namespace hw3
 {
 	template<typename T>
 	struct DefaultCampFunc { bool operator () (T const & a, T const & b) const { return a < b; } };
 
+	template<typename T>
+	struct DummyHashMap
+	{
+		struct Iterator
+		{
+			inline operator bool() const { return false; }
+		};
 
-	template<typename T, typename CampFunc = DefaultCampFunc<T>>
+		inline void Set(T const&, size_t) {}
+		inline Iterator Find(T const&) { return Iterator(); }
+		inline void Remove(T const&) {}
+	};
+
+	template<typename T, typename CampFunc = DefaultCampFunc<T>, typename HashMapType = DummyHashMap<T>>
 	class BinaryHeap
 	{
 	public:
@@ -21,12 +34,14 @@ namespace hw3
 			while (cur > 0 && campFunc(element, data[par]))
 			{
 				data.Set(cur, data[par]);
+				hash_table.Set(data[par], cur);
 
 				cur = par;
 				par = (cur - 1) / 2;
 			}
 
 			data.Set(cur, element);
+			hash_table.Set(element, cur);
 		}
 
 		inline T& Delete()
@@ -40,6 +55,7 @@ namespace hw3
 
 				T t = data[max];
 				data[max] = data[0];
+				hash_table.Remove(data[max]);
 
 				size_t i = 0;
 				size_t j = i * 2 + 1;
@@ -50,7 +66,10 @@ namespace hw3
 						j++;
 
 					if (campFunc(data[j], t))
+					{
 						data[i] = data[j];
+						hash_table.Set(data[i], i);
+					}
 					else
 						break;
 
@@ -59,9 +78,32 @@ namespace hw3
 				}
 
 				data[i] = t;
+				hash_table.Set(t, i);
 			}
 
 			return data.Pop();
+		}
+
+		inline void DecreaseKey(T const & element)
+		{
+			auto iter = hash_table.Find(element);
+			if (iter)
+			{
+				size_t cur = iter->second;
+				size_t par = (cur - 1) / 2;
+
+				while (cur > 0 && campFunc(element, data[par]))
+				{
+					data.Set(cur, data[par]);
+					hash_table.Set(data[par], cur);
+
+					cur = par;
+					par = (cur - 1) / 2;
+				}
+
+				data.Set(cur, element);
+				hash_table.Set(element, cur);
+			}
 		}
 
 		inline bool Empty() const
@@ -70,7 +112,8 @@ namespace hw3
 		}
 
 	private:
-		Array<T>	data;
-		CampFunc	campFunc;
+		Array<T>		data;
+		HashMapType		hash_table;
+		CampFunc		campFunc;
 	};
 }

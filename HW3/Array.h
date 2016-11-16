@@ -14,13 +14,16 @@ namespace hw3
 		inline Array(size_t size = 0, size_t capacity = 16)
 			:
 			data(nullptr),
-			capacity(capacity),
-			size(size)
+			capacity(0),
+			size(0)
 		{
 			if (capacity < size)
 			{
 				capacity = size;
 			}
+
+			this->capacity = capacity;
+			this->size = size;
 
 			if (capacity > 0)
 			{

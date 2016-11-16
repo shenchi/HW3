@@ -238,13 +238,13 @@ namespace hw3
 				if (iter.ptr == tail)
 					tail = tail->prev;
 
-				if (nullptr != iter->next)
-					iter->next->prev = iter->prev;
+				if (nullptr != iter.ptr->next)
+					iter.ptr->next->prev = iter.ptr->prev;
 
-				if (nullptr != iter->prev)
-					iter->prev->next = iter->next;
+				if (nullptr != iter.ptr->prev)
+					iter.ptr->prev->next = iter.ptr->next;
 
-				Size--;
+				size--;
 
 				delete iter.ptr;
 			}

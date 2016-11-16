@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Array.h"
-#include "BinaryHeap.h"
+#include "PriorityQueue.h"
 
 namespace hw3
 {
@@ -30,17 +30,16 @@ namespace hw3
 
 		Array<size_t> path;
 
-		BinaryHeap<PathNode<TWeight>> queue;
+		PriorityQueue<size_t, TWeight> queue;
 
-		queue.Insert(PathNode<TWeight>(start, &dist));
+		queue.Enqueue(start, 0.0f);
 		queued[start] = true;
 		dist[start] = 0;
 		from[start] = start;
 
 		while (!queue.Empty())
 		{
-			auto node = queue.Delete();
-			size_t cur = node.node;
+			size_t cur = queue.Dequeue().first;
 
 			closed[cur] = true;
 
@@ -61,13 +60,14 @@ namespace hw3
 					TWeight new_dist = dist[cur] + graph.Weight(cur, i);
 					if (!queued[i])
 					{
-						queue.Insert(PathNode<TWeight>(i, &dist));
+						queue.Enqueue(i, new_dist);
 						queued[i] = true;
 						dist[i] = new_dist;
 						from[i] = cur;
 					}
 					else if (dist[i] > new_dist)
 					{
+						queue.DecreasePriority(i, new_dist);
 						dist[i] = new_dist;
 						from[i] = cur;
 					}
