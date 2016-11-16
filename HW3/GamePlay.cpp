@@ -35,6 +35,12 @@ namespace hw3
 
 		float deltaTime = std::chrono::duration<float>(now - lastTime).count();
 
+		if (enemy.X() == player.X() && enemy.Y() == player.Y())
+		{
+			player.SetPosition(0, 0);
+			enemy.SetPosition(map.Width() - 1, 0);
+		}
+
 		if (deltaTime > 0.2f)
 		{
 			lastTime = now;

@@ -6,22 +6,13 @@
 namespace hw3
 {
 	template<typename T>
-	struct PathNode
+	struct DummyHeuristic
 	{
-		size_t		node;
-		Array<T>*	dist;
-
-		PathNode() : node(0), dist(nullptr) {}
-		PathNode(size_t node, Array<T>* dist) : node(node), dist(dist) {}
-
-		inline bool operator < (PathNode const & other) const
-		{
-			return (*dist)[node] < (*dist)[other.node];
-		}
+		inline T operator () (size_t cur, size_t end) const { return T(); }
 	};
 
-	template<typename TGraph, typename TWeight>
-	Array<size_t> Dijkstra(TGraph& graph, size_t start, size_t end)
+	template<typename TGraph, typename TWeight, typename THeuristic = DummyHeuristic<TWeight>>
+	Array<size_t> Dijkstra(TGraph& graph, size_t start, size_t end, THeuristic& heuristic = DummyHeuristic<TWeight>())
 	{
 		Array<bool>	closed(graph.Size());
 		Array<bool>	queued(graph.Size());
@@ -61,14 +52,14 @@ namespace hw3
 					TWeight new_dist = dist[cur] + graph.Weight(cur, i);
 					if (!queued[i])
 					{
-						queue.Enqueue(i, new_dist);
+						queue.Enqueue(i, new_dist + heuristic(cur, end));
 						queued[i] = true;
 						dist[i] = new_dist;
 						from[i] = cur;
 					}
 					else if (dist[i] > new_dist)
 					{
-						queue.DecreasePriority(i, new_dist);
+						queue.DecreasePriority(i, new_dist + heuristic(cur, end));
 						dist[i] = new_dist;
 						from[i] = cur;
 					}

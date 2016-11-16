@@ -148,6 +148,29 @@ namespace hw3
 
 #pragma endregion
 
+#pragma region Interface for Pathfinding
+
+		struct Heuristic
+		{
+			TiledMap* map;
+			inline int operator () (size_t cur, size_t end) const 
+			{
+				int cx = 0, cy = 0;
+				int ex = 0, ey = 0;
+				map->Hash2Coord(cur, cx, cy);
+				map->Hash2Coord(end, ex, ey);
+
+				return abs(cx - ex) + abs(cy - ey);
+			}
+		};
+
+		Heuristic GetHeuristicFunc()
+		{
+			return Heuristic{ this };
+		}
+
+#pragma endregion
+
 
 	private:
 		int		width;

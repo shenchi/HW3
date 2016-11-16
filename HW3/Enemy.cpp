@@ -27,7 +27,11 @@ namespace hw3
 			size_t st = map->Coord2Hash(x, y);
 			size_t ed = map->Coord2Hash(target->X(), target->Y());
 
-			path = Dijkstra<TiledMap, int>(*map, st, ed);
+			// for pure Dijkstra, use this line
+			//path = Dijkstra<TiledMap, int>(*map, st, ed);
+
+			// for A*, use this line
+			path = Dijkstra<TiledMap, int, TiledMap::Heuristic>(*map, st, ed, map->GetHeuristicFunc());
 		}
 	}
 
