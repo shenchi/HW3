@@ -90,6 +90,7 @@ namespace hw3
 		class Iterator
 		{
 		public:
+			inline Iterator() : ptr(nullptr) {}
 
 			inline operator bool () const
 			{
@@ -134,23 +135,22 @@ namespace hw3
 				return ptr->data;
 			}
 
-			inline T& operator -> ()
+			inline T* operator -> ()
 			{
 				if (nullptr == ptr)
 					throw InvalidIndex();
-				return ptr->data;
+				return &(ptr->data);
 			}
 
-			inline T const & operator -> () const
+			inline T const * const & operator -> () const
 			{
 				if (nullptr == ptr)
 					throw InvalidIndex();
-				return ptr->data;
+				return &(ptr->data);
 			}
 
 		private:
 			friend class Queue<T>;
-			inline Iterator() = delete;
 			inline Iterator(Node* ptr) : ptr(ptr) {}
 
 		private:
@@ -229,10 +229,31 @@ namespace hw3
 			return data;
 		}
 
-		Iterator GetIterator()
+		inline void Remove(Iterator iter)
+		{
+			if (iter)
+			{
+				if (iter.ptr == head)
+					head = head->next;
+				if (iter.ptr == tail)
+					tail = tail->prev;
+
+				if (nullptr != iter->next)
+					iter->next->prev = iter->prev;
+
+				if (nullptr != iter->prev)
+					iter->prev->next = iter->next;
+
+				Size--;
+
+				delete iter.ptr;
+			}
+		}
+
+		inline Iterator GetIterator()
 		{
 			if (Empty())
-				return Iterator(nullptr);
+				return Iterator();
 
 			return Iterator(head);
 		}

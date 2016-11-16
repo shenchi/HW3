@@ -2,6 +2,7 @@
 
 #include "Array.h"
 #include "Queue.h"
+#include "HashMap.h"
 #include "BinaryHeap.h"
 #include "Graph.h"
 #include "Dijkstra.h"
@@ -67,6 +68,30 @@ void TestQueue()
 	cout << ']' << endl << endl;
 }
 
+void TestHashMap()
+{
+	cout << "Test for HashMap<int, int>:" << endl;
+
+	hw3::HashMap<int, int> map;
+
+	map.Set(0, 10);
+	map.Set(1, 9);
+	map.Set(2, 8);
+	map.Set(3, 7);
+	map.Set(4, 6);
+	map.Set(5, 5);
+
+
+	cout << "values for keys [0..5]: [ ";
+
+	for (int i = 0; i <= 5; i++)
+	{
+		cout << (map.Find(i))->value << ' ';
+	}
+
+	cout << ']' << endl << endl;
+}
+
 void TestBinaryHeap()
 {
 	cout << "Test for BinearyHeap<int>:" << endl;
@@ -115,6 +140,8 @@ int main(int argc, char** argv)
 	TestArray();
 
 	TestQueue();
+
+	TestHashMap();
 
 	TestBinaryHeap();
 
